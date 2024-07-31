@@ -20,8 +20,40 @@ def inicio(request):
     return render(request, "apppreentrega/inicio.html")
 
 def crear_cliente(request):
-    return render(request, "apppreentrega/nosotros.html")
+    return render(request, "apppreentrega/crear-cliente.html")
 
 def mostrar_clientes(request):
-    return HttpResponse("Esta vista para Mostrar cliente")
+    return render(request, "apppreentrega/mostrar.html")
+
+
+from apppreentrega.models import Client
+
+
+def crear_cliente(request):
     
+    if request.method == 'POST':
+        
+        cliente =Client(nombre=request.POST['nombre'],apellido=request.POST['apellido'],correo=request.POST['correo'])
+        cliente.save()
+        
+        return render(request, "apppreentrega/crear-cliente.html")
+    
+    return render(request,"apppreentrega/crear-cliente.html")
+
+def mostrar(request):
+    
+    return render(request, "apppreentrega/mostrar")
+
+def buscar(request):
+    
+    if request.GET["nombre"]:
+        cliente = request.Get['nombre']
+        cliente = Client.objects.filter(cliente__icontains=nombre)
+    
+        return render(request, "apppreentrega/mostrar.html", {"nombre":nombre, "apellido":apellido,"correo":correo})
+
+    else:
+    
+        respuesta = " No enviaste Datos"
+        
+    return HttpResponse(respuesta)
